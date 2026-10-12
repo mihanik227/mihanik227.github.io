@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <!-- Кодировка и адаптивность: без этой строки телефон покажет сайт как на компьютере -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prime Detailing — Детейлинг-центр в Минске</title>
+
+  <style>
+    /* ============================================================
+       СБРОС И БАЗОВЫЕ НАСТРОЙКИ
+       ============================================================ */
+    * {
+      margin: 0;
+      padding: 0;
+      /* border-box — размеры элемента включают padding и border.
+         Без этого адаптив ломается, потому что padding добавляется сверху. */
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+      background: #000000;
+      color: #f5f5f7;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* Контейнер: центрирует содержимое и не даёт растягиваться на огромных экранах */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ============================================================
+       1. ШАПКА
+       ============================================================ */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.75);
+      /* Размытие фона — премиальный эффект как на apple.com */
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Flexbox: логотип слева, навигация справа */
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #f5f5f7;
+    }
+
+    /* Кружок с буквой P вместо иконки */
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2997ff, #a78bfa);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      box-shadow: 0 4px 14px -4px rgba(41, 151, 255, 0.7);
+    }
+
+    .logo span.city {
+      color: #86868b;
+      font-weight: 400;
+      font-size: 13px;
+      margin-left: 4px;
+    }
+
+    /* Навигация — на компьютере видна, на телефоне спрячем */
+    nav {
+      display: flex;
+      gap: 28px;
+      font-size: 14px;
+    }
+
+    nav a {
+      color: #a1a1a6;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: #f5f5f7; }
+
+    /* ============================================================
+       2. ГЛАВНЫЙ БАННЕР (HERO)
+       ============================================================ */
+    .hero {
+      padding: 100px 0 90px;
+      text-align: center;
+      background: radial-gradient(ellipse at top, rgba(41, 151, 255, 0.18) 0%, transparent 60%);
+      position: relative;
+    }
+
+    .hero .tag {
+      display: inline-block;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      border-radius: 20px;
+      background: rgba(41, 151, 255, 0.15);
+      color: #2997ff;
+      border: 1px solid rgba(41, 151, 255, 0.35);
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      /* clamp(min, идеально, max) — адаптивный размер шрифта БЕЗ медиа-запросов.
+         На телефоне — 34px, на большом экране — до 68px. */
+      font-size: clamp(34px, 6vw, 68px);
+      font-weight: 700;
+      letter-spacing: -2px;
+      line-height: 1.05;
+      margin-bottom: 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #86868b 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: clamp(15px, 2vw, 20px);
+      color: #86868b;
+      max-width: 620px;
+      margin: 0 auto 32px;
+    }
+
+    /* Кнопка "Записаться" с неоновым свечением при наведении */
+    .btn-primary {
+      display: inline-block;
+      padding: 16px 40px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #2997ff, #0071e3);
+      box-shadow:
+        0 10px 30px -10px rgba(41, 151, 255, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.3s ease,
+                  background 0.3s ease;
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, #4dabff, #2997ff);
+      box-shadow:
+        0 0 20px rgba(41, 151, 255, 0.9),
+        0 0 40px rgba(41, 151, 255, 0.6),
+        0 0 80px rgba(41, 151, 255, 0.4),
+        0 12px 30px -8px rgba(0, 113, 227, 0.7);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    /* ============================================================
+       3. БЛОК "НАШИ УСЛУГИ"
+       ============================================================ */
+    .services {
+      padding: 80px 0 100px;
+    }
+
+    .section-head {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .section-head p {
+      font-size: 15px;
+      color: #86868b;
+    }
+
+    /* ГЛАВНАЯ СЕТКА: CSS Grid с auto-fit — карточки сами перестраиваются.
+       На широком экране: 3 колонки, на среднем: 2, на телефоне: 1. */
+    .services-grid {
+      display: grid;
+      /* auto-fit — автоматически подгоняет число колонок;
+         minmax(280px, 1fr) — колонка не меньше 280px, но растягивается.
+         Как только места мало — карточки переносятся на новую строку. */
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 22px;
+    }
+
+    /* Карточка услуги */
+    .service-card {
+      background: linear-gradient(180deg, #1d1d1f 0%, #111112 100%);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 22px;
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                  border-color 0.35s,
+                  box-shadow 0.35s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(41, 151, 255, 0.45);
+      box-shadow: 0 20px 60px -20px rgba(41, 151, 255, 0.4);
+    }
+
+    /* Иконка услуги — эмодзи в градиентном круге */
+    .service-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, rgba(41, 151, 255, 0.2), rgba(167, 139, 250, 0.2));
+      border: 1px solid rgba(41, 151, 255, 0.3);
+    }
+
+    .service-card h3 {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.4px;
+      margin-bottom: 10px;
+    }
+
+    .service-card p {
+      font-size: 14px;
+      color: #86868b;
+      line-height: 1.55;
+      margin-bottom: 22px;
+      /* flex-grow заставляет описание занять всё свободное место,
+         чтобы цена и кнопка оказались внизу карточки */
+      flex-grow: 1;
+    }
+
+    .service-price {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.6px;
+      background: linear-gradient(135deg, #2997ff, #a78bfa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 18px;
+    }
+
+    .service-price small {
+      font-size: 14px;
+      font-weight: 500;
+      color: #86868b;
+      margin-left: 3px;
+      -webkit-text-fill-color: #86868b;
+    }
+
+    /* Кнопка внутри карточки */
+    .service-btn {
+      display: block;
+      width: 100%;
+      padding: 13px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      color: #f5f5f7;
+      text-decoration: none;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: background 0.2s, border-color 0.2s;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .service-btn:hover {
+      background: rgba(41, 151, 255, 0.15);
+      border-color: rgba(41, 151, 255, 0.5);
+      color: #4dabff;
+    }
+
+    /* ============================================================
+       4. ФУТЕР
+       ============================================================ */
+    footer {
+      padding: 40px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      text-align: center;
+      color: #6e6e73;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    footer a {
+      color: #86868b;
+      text-decoration: none;
+    }
+
+    footer a:hover { color: #f5f5f7; }
+
+    /* ============================================================
+       5. МЕДИА-ЗАПРОСЫ — АДАПТАЦИЯ ПОД ТЕЛЕФОНЫ
+       ============================================================ */
+
+    /* Планшеты и небольшие ноутбуки: уменьшаем отступы навигации */
+    @media (max-width: 900px) {
+      nav {
+        gap: 18px;
+        font-size: 13px;
+      }
+
+      .hero {
+        padding: 80px 0 70px;
+      }
+
+      .services {
+        padding: 60px 0 80px;
+      }
+    }
+
+    /* ТЕЛЕФОНЫ: карточки в один столбик, крупные шрифты, широкие кнопки.
+       Этот медиа-запрос сработает, когда ширина экрана ≤ 640px. */
+    @media (max-width: 640px) {
+
+      /* Контейнер: уменьшаем боковые отступы, чтобы контент занимал больше места */
+      .container {
+        padding: 0 18px;
+      }
+
+      /* --- ШАПКА --- */
+      /* Скрываем навигацию на телефоне — для неё нет места */
+      nav {
+        display: none;
+      }
+
+      .header-inner {
+        padding: 14px 0;
+      }
+
+      .logo {
+        font-size: 16px;
+      }
+
+      .logo-mark {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+      }
+
+      .logo span.city {
+        font-size: 11px;
+      }
+
+      /* --- БАННЕР --- */
+      /* Отступы меньше — на телефоне вертикальное пространство дорого */
+      .hero {
+        padding: 60px 0 50px;
+      }
+
+      .hero h1 {
+        /* Чуть меньше межбуквенное расстояние для мелких размеров */
+        letter-spacing: -1.2px;
+      }
+
+      /* Кнопка "Записаться" — во всю ширину, крупнее по высоте,
+         чтобы удобно нажимать большим пальцем */
+      .btn-primary {
+        display: block;
+        width: 100%;
+        padding: 18px 24px;
+        font-size: 17px;
+        /* min-height 52px — рекомендованный Apple/Google размер тач-цели */
+        min-height: 52px;
+      }
+
+      /* --- УСЛУГИ --- */
+      .services {
+        padding: 50px 0 60px;
+      }
+
+      .section-head {
+        margin-bottom: 32px;
+      }
+
+      /* СЕТКА В ОДИН СТОЛБИК: на телефоне карточки идут вертикально.
+         Явно указываем 1fr — одна колонка во всю ширину. */
+      .services-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      /* Карточка: увеличиваем внутренние отступы и делаем её крупнее,
+         чтобы читать и нажимать было комфортно */
+      .service-card {
+        padding: 26px 22px;
+      }
+
+      .service-card h3 {
+        font-size: 20px;
+      }
+
+      .service-card p {
+        font-size: 15px;
+      }
+
+      .service-price {
+        font-size: 24px;
+      }
+
+      /* Кнопка в карточке — тоже во всю ширину и повыше */
+      .service-btn {
+        padding: 15px;
+        font-size: 15px;
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    /* ОЧЕНЬ УЗКИЕ ТЕЛЕФОНЫ (например, iPhone SE — 375px и меньше) */
+    @media (max-width: 380px) {
+      .hero h1 {
+        letter-spacing: -0.8px;
+      }
+
+      .logo span.city {
+        /* Прячем надпись "Минск" на самых маленьких экранах */
+        display: none;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ==================== ШАПКА ==================== -->
+  <header>
+    <div class="container header-inner">
+      <div class="logo">
+        <div class="logo-mark">P</div>
+        Prime Detailing <span class="city">Минск</span>
+      </div>
+      <nav>
+        <a href="#services">Услуги</a>
+        <a href="#contacts">Контакты</a>
+        <a href="#about">О нас</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== ГЛАВНЫЙ БАННЕР ==================== -->
+  <section class="hero">
+    <div class="container">
+      <span class="tag">Премиальный уход за авто · Минск</span>
+      <h1>Ваш автомобиль<br>заслуживает лучшего</h1>
+      <p>Профессиональная полировка, химчистка салона и керамическое покрытие. Работаем с 2015 года.</p>
+      <a href="#services" class="btn-primary">Записаться</a>
+    </div>
+  </section>
+
+  <!-- ==================== НАШИ УСЛУГИ ==================== -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-head">
+        <h2>Наши услуги</h2>
+        <p>Три направления — комплексный уход за вашим автомобилем</p>
+      </div>
+
+      <div class="services-grid">
+
+        <!-- Карточка 1: Полировка -->
+        <div class="service-card">
+          <div class="service-icon">✨</div>
+          <h3>Полировка кузова</h3>
+          <p>Убираем царапины, следы от веток и голограммы. Возвращаем заводской блеск лакокрасочному покрытию с гарантией результата.</p>
+          <div class="service-price">от 350 <small>BYN</small></div>
+          <a href="#contacts" class="service-btn">Записаться</a>
+        </div>
+
+        <!-- Карточка 2: Химчистка -->
+        <div class="service-card">
+          <div class="service-icon">🧼</div>
+          <h3>Химчистка салона</h3>
+          <p>Глубокая чистка всех поверхностей: сиденья, потолок, пластик, ковролин. Удаляем пятна, запахи и следы эксплуатации.</p>
+          <div class="service-price">от 280 <small>BYN</small></div>
+          <a href="#contacts" class="service-btn">Записаться</a>
+        </div>
+
+        <!-- Карточка 3: Керамика -->
+        <div class="service-card">
+          <div class="service-icon">💎</div>
+          <h3>Керамическое покрытие</h3>
+          <p>Защитный слой на 2–5 лет: гидрофобный эффект, защита от реагентов и ультрафиолета. Максимальный глянец и защита.</p>
+          <div class="service-price">от 890 <small>BYN</small></div>
+          <a href="#contacts" class="service-btn">Записаться</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ФУТЕР ==================== -->
+  <footer id="contacts">
+    <div class="container">
+      <p>© 2025 Prime Detailing — Детейлинг-центр в Минске</p>
+      <p style="margin-top: 8px;">
+        Минск, ул. Примерная 15 · +375 (29) 123-45-67 · <a href="https://t.me/your_username">Telegram</a>
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>
